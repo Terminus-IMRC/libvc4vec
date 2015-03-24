@@ -1,0 +1,23 @@
+TARGET := libvc4vec.a
+SRCS := vc4vec.c vc4vec_mem.c mem_node.c
+DEPS := $(SRCS:%.c=%.c.d)
+OBJS := $(SRCS:%.c=%.c.o)
+ALLDEPS = $(MAKEFILE_LIST_SANS_DEPS)
+CFLAGS := -Wall -Wextra -O2
+
+# $(call add-another-tree, src-dir)
+define add-another-tree
+  include $1/Makefile.info
+	DEPS += $$(addprefix $1/, $$(DEPS_$(strip $1)))
+	OBJS += $$(addprefix $1/, $$(OBJS_$(strip $1)))
+endef
+
+$(eval $(call add-another-tree, mailbox))
+$(eval $(call add-another-tree, libvc4v3d))
+
+# $(call set-cflags-src, src-file, flags)
+define set-cflags-src
+  $(1:%.c=%.c.d) $(1:%.c=%.c.o): CFLAGS_LOCAL += $2
+endef
+
+$(eval $(call set-cflags-src, mem_node.c, -I mailbox/))
