@@ -2,6 +2,7 @@
 
 #include "vc4vec.h"
 #include "vc4vec_local.h"
+#include "vc4vec_mem.h"
 
 void vc4vec_init()
 {
@@ -10,6 +11,8 @@ void vc4vec_init()
 	if (is_called)
 		return;
 	is_called = !0;
+
+	vc4vec_mem_init();
 
 	atexit(vc4vec_finalize);
 }
@@ -21,4 +24,6 @@ void vc4vec_finalize()
 	if (is_called)
 		return;
 	is_called = !0;
+
+	vc4vec_mem_finalize();
 }
