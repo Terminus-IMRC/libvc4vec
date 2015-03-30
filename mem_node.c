@@ -6,8 +6,8 @@
 #include "vc4vec_local.h"
 #include "mem_node.h"
 
-#include "mailbox.h"
-#include "xmailbox.h"
+#include "mailbox/mailbox.h"
+#include "mailbox/xmailbox.h"
 
 #define GPU_MEM_FLG (1 << 2)
 
