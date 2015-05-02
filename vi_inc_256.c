@@ -5,7 +5,7 @@
 #include "vc4vec_mem.h"
 #include "qpu_job_launcher.h"
 
-const unsigned code[] = {
+static const unsigned code[] = {
 #include "vi_inc_256.qasm.bin.hex"
 };
 
