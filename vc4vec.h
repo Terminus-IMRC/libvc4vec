@@ -17,4 +17,6 @@
 
 	void launch_qpu_job(uint32_t unif_length, uint32_t unif_addr, uint32_t prog_addr);
 
+	void vi_inc_256(unsigned vpmout_qpu, unsigned vpmin_qpu, const int vec_nmemb);
+
 #endif /* _VC4VEC_H_ */
