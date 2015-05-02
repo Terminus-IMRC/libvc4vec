@@ -9,6 +9,8 @@ CFLAGS_LOCAL := -Wall -Wextra -O2
 LDLIBS_LOCAL := -lmailbox -lvc4v3d
 
 CC := gcc
+QTC := qtc
+QBIN2HEX := qbin2hex
 RM := rm -f
 
 VALID_MAKECMDGOALS := all $(TARGET) %.c.d %.c.o clean
@@ -43,6 +45,12 @@ all: $(TARGET)
 
 %.c.d: %.c $(ALLDEPS)
 	$(COMPILE.d) $<
+
+%.qasm.bin.hex: %.qasm.bin $(ALLDEPS)
+	$(QBIN2HEX) <$< >$@
+
+%.qasm.bin: %.qasm $(ALLDEPS)
+	$(QTC) <$< >$@
 
 .PHONY: clean
 clean:
