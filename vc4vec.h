@@ -5,7 +5,6 @@
 	void vc4vec_finalize();
 
 	struct vc4vec_mem {
-		size_t size;
 		unsigned handle;
 		unsigned gpu_addr;
 		void *cpu_addr;
