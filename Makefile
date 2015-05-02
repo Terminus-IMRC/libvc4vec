@@ -8,7 +8,7 @@ QASMS := vi_inc_256.qasm
 QBINS := $(QASMS:%.qasm=%.qasm.bin)
 QHEXS := $(QASMS:%.qasm=%.qasm.bin.hex)
 ALLDEPS = $(MAKEFILE_LIST_SANS_DEPS)
-CFLAGS_LOCAL := -Wall -Wextra -O2
+CFLAGS_LOCAL := -Wall -Wextra -O2 -g
 LDLIBS_LOCAL := -lmailbox -lvc4v3d
 
 # $(eval $(call dep-on-c, dep, c-source))
