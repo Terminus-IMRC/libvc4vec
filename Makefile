@@ -1,7 +1,7 @@
 all:
 
 TARGET := libvc4vec.so
-SRCS := vc4vec.c vc4vec_local.c vc4vec_mem.c mem_node.c qpu_job_launcher.c
+SRCS := vc4vec.c vc4vec_local.c vc4vec_mem.c mem_node.c qpu_job_launcher.c vi_inc_256.c
 DEPS := $(SRCS:%.c=%.c.d)
 OBJS := $(SRCS:%.c=%.c.o)
 ALLDEPS = $(MAKEFILE_LIST_SANS_DEPS)

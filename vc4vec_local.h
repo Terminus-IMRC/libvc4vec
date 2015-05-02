@@ -12,6 +12,7 @@
 		signed mem; /* vc4vec_mem */
 		signed mem_node; /* mem_allocated_node */
 		signed job_launcher; /* qpu_job_launcher */
+		signed vi_inc_256; /* vi_inc_256 */
 	};
 
 	extern struct vc4vec_called vc4vec_called;
