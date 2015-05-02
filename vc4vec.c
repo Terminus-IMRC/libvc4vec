@@ -3,6 +3,7 @@
 #include "vc4vec.h"
 #include "vc4vec_local.h"
 #include "vc4vec_mem.h"
+#include "qpu_job_launcher.h"
 
 void vc4vec_init()
 {
@@ -14,6 +15,7 @@ void vc4vec_init()
 
 	vc4vec_local_init();
 	vc4vec_mem_init();
+	qpu_job_launcher_init();
 
 	atexit(vc4vec_finalize);
 }
@@ -28,4 +30,5 @@ void vc4vec_finalize()
 
 	vc4vec_local_finalize();
 	vc4vec_mem_finalize();
+	qpu_job_launcher_finalize();
 }
