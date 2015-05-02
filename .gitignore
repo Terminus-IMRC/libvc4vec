@@ -2,6 +2,9 @@
 *.c.o
 *.so
 
+*.qasm.bin
+*.qasm.bin.hex
+
 *.swp
 
 tags
