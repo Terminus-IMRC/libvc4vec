@@ -4,9 +4,25 @@ TARGET := libvc4vec.so
 SRCS := vc4vec.c vc4vec_local.c vc4vec_mem.c mem_node.c qpu_job_launcher.c vi_inc_256.c
 DEPS := $(SRCS:%.c=%.c.d)
 OBJS := $(SRCS:%.c=%.c.o)
+QASMS := vi_inc_256.qasm
+QBINS := $(QASMS:%.qasm=%.qasm.bin)
+QHEXS := $(QASMS:%.qasm=%.qasm.bin.hex)
 ALLDEPS = $(MAKEFILE_LIST_SANS_DEPS)
 CFLAGS_LOCAL := -Wall -Wextra -O2
 LDLIBS_LOCAL := -lmailbox -lvc4v3d
+
+# $(eval $(call dep-on-c, dep, c-source))
+define dep-on-c
+ $(2:%.c=%.c.d) $(2:%.c=%.c.o): $1
+endef
+
+# $(eval $(call qasm-dep-on-c, qasm-source, c-source))
+define qasm-dep-on-c
+ $(call dep-on-c, $(1:%.qasm=%.qasm.bin), $2)
+ $(call dep-on-c, $(1:%.qasm=%.qasm.bin.hex), $2)
+endef
+
+$(eval $(call qasm-dep-on-c, vi_inc_256.qasm, vi_inc_256.c))
 
 CC := gcc
 QTC := qtc
@@ -57,3 +73,5 @@ clean:
 	$(RM) $(TARGET)
 	$(RM) $(OBJS)
 	$(RM) $(DEPS)
+	$(RM) $(QBINS)
+	$(RM) $(QHEXS)
