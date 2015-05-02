@@ -6,6 +6,9 @@
 #include "vc4vec_local.h"
 #include "mem_node.h"
 
+#include "mailbox/mailbox.h"
+#include "mailbox/xmailbox.h"
+
 #define GPU_MEM_FLG (1 << 2)
 
 static const int align = 4096;
