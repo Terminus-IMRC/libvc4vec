@@ -37,8 +37,12 @@ void vc4vec_mem_alloc(struct vc4vec_mem *mem, int size)
 
 	if (orig == NULL)
 		p = orig = mem_allocated_node_alloc(size);
-	else
-		p = orig->next = mem_allocated_node_alloc(size);
+	else {
+		struct mem_allocated_node *p2 = orig;
+		while (p2->next != NULL)
+			p2 = p2->next;
+		p = p2->next = mem_allocated_node_alloc(size);
+	}
 
 	mem->handle = p->handle;
 	mem->gpu_addr = p->gpu_addr;
