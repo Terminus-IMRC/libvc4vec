@@ -35,7 +35,7 @@ void vc4vec_mem_finalize()
 	mem_allocated_node_finalize();
 }
 
-void* vc4vec_mem_alloc(int size)
+void vc4vec_mem_alloc(struct vc4vec_mem *mem, int size)
 {
 	struct mem_allocated_node *p;
 
@@ -44,15 +44,17 @@ void* vc4vec_mem_alloc(int size)
 	else
 		p = orig->next = mem_allocated_node_alloc(size);
 
-	return p->cpu_addr;
+	mem->handle = p->handle;
+	mem->gpu_addr = p->gpu_addr;
+	mem->cpu_addr = p->cpu_addr;
 }
 
-void vc4vec_mem_free(void *cpu_addr)
+void vc4vec_mem_free(struct vc4vec_mem *mem)
 {
 	struct mem_allocated_node *p = orig, *prev = NULL;
 
 	while (p != NULL) {
-		if (p->cpu_addr == cpu_addr) {
+		if (p->handle == mem->handle) {
 			if (prev == NULL) /* so p == orig */
 				orig = orig->next;
 			else
@@ -66,7 +68,7 @@ void vc4vec_mem_free(void *cpu_addr)
 		p = p->next;
 	}
 
-	error("non-allocated address\n");
+	error("non-allocated struct\n");
 	exit(EXIT_FAILURE);
 }
 
