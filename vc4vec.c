@@ -12,6 +12,7 @@ void vc4vec_init()
 		return;
 	is_called = !0;
 
+	vc4vec_local_init();
 	vc4vec_mem_init();
 
 	atexit(vc4vec_finalize);
@@ -25,5 +26,6 @@ void vc4vec_finalize()
 		return;
 	is_called = !0;
 
+	vc4vec_local_finalize();
 	vc4vec_mem_finalize();
 }

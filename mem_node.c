@@ -12,7 +12,6 @@
 #define GPU_MEM_FLG (1 << 2)
 
 static const int align = 4096;
-static int mb;
 
 void mem_allocated_node_init()
 {
@@ -22,7 +21,7 @@ void mem_allocated_node_init()
 		return;
 	is_called = !0;
 
-	mb = xmbox_open();
+	vc4vec_local_init();
 }
 
 void mem_allocated_node_finalize()
@@ -33,7 +32,7 @@ void mem_allocated_node_finalize()
 		return;
 	is_called = !0;
 
-	xmbox_close(mb);
+	vc4vec_local_finalize();
 }
 
 struct mem_allocated_node* mem_allocated_node_alloc(size_t size)
