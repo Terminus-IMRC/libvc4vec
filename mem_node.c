@@ -15,22 +15,18 @@ static const int align = 4096;
 
 void mem_allocated_node_init()
 {
-	static _Bool is_called = 0;
-
-	if (is_called)
+	vc4vec_called.mem_node++;
+	if (vc4vec_called.mem_node != 1)
 		return;
-	is_called = !0;
 
 	vc4vec_local_init();
 }
 
 void mem_allocated_node_finalize()
 {
-	static _Bool is_called = 0;
-
-	if (is_called)
+	vc4vec_called.mem_node--;
+	if (vc4vec_called.mem_node != -1)
 		return;
-	is_called = !0;
 
 	vc4vec_local_finalize();
 }

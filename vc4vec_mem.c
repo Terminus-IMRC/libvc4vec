@@ -13,22 +13,18 @@ static void mem_free_all();
 
 void vc4vec_mem_init()
 {
-	static _Bool is_called = 0;
-
-	if (is_called)
+	vc4vec_called.mem++;
+	if (vc4vec_called.mem != 1)
 		return;
-	is_called = !0;
 
 	mem_allocated_node_init();
 }
 
 void vc4vec_mem_finalize()
 {
-	static _Bool is_called = 0;
-
-	if (is_called)
+	vc4vec_called.mem--;
+	if (vc4vec_called.mem != -1)
 		return;
-	is_called = !0;
 
 	mem_free_all();
 

@@ -9,22 +9,18 @@
 
 void qpu_job_launcher_init()
 {
-	static _Bool is_called = 0;
-
-	if (is_called)
+	vc4vec_called.job_launcher++;
+	if (vc4vec_called.job_launcher != 1)
 		return;
-	is_called = !0;
 
 	vc4vec_local_init();
 }
 
 void qpu_job_launcher_finalize()
 {
-	static _Bool is_called = 0;
-
-	if (is_called)
+	vc4vec_called.job_launcher--;
+	if (vc4vec_called.job_launcher != -1)
 		return;
-	is_called = !0;
 
 	vc4vec_local_finalize();
 }

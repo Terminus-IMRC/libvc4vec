@@ -11,13 +11,13 @@
 int mb;
 unsigned *v3d_p;
 
+struct vc4vec_called vc4vec_called;
+
 void vc4vec_local_init()
 {
-	static _Bool is_called = 0;
-
-	if (is_called)
+	vc4vec_called.local++;
+	if (vc4vec_called.local != 1)
 		return;
-	is_called = !0;
 
 	mb = xmbox_open();
 	if (qpu_enable(mb, 1)) {
@@ -30,11 +30,9 @@ void vc4vec_local_init()
 
 void vc4vec_local_finalize()
 {
-	static _Bool is_called = 0;
-
-	if (is_called)
+	vc4vec_called.local--;
+	if (vc4vec_called.local != -1)
 		return;
-	is_called = !0;
 
 	unmapmem_cpu(v3d_p, V3D_LENGTH);
 	v3d_finalize();
