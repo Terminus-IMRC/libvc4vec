@@ -33,7 +33,7 @@ void vi_inc_256_init()
 void vi_inc_256_finalize()
 {
 	vc4vec_called.vi_inc_256--;
-	if (vc4vec_called.vi_inc_256 != -1)
+	if (vc4vec_called.vi_inc_256 != 0)
 		return;
 
 	qpu_job_launcher_finalize();

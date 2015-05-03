@@ -19,7 +19,7 @@ void qpu_job_launcher_init()
 void qpu_job_launcher_finalize()
 {
 	vc4vec_called.job_launcher--;
-	if (vc4vec_called.job_launcher != -1)
+	if (vc4vec_called.job_launcher != 0)
 		return;
 
 	vc4vec_local_finalize();

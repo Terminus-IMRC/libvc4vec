@@ -25,7 +25,7 @@ void mem_allocated_node_init()
 void mem_allocated_node_finalize()
 {
 	vc4vec_called.mem_node--;
-	if (vc4vec_called.mem_node != -1)
+	if (vc4vec_called.mem_node != 0)
 		return;
 
 	vc4vec_local_finalize();

@@ -23,7 +23,7 @@ void vc4vec_mem_init()
 void vc4vec_mem_finalize()
 {
 	vc4vec_called.mem--;
-	if (vc4vec_called.mem != -1)
+	if (vc4vec_called.mem != 0)
 		return;
 
 	mem_free_all();

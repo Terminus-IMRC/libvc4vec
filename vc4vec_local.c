@@ -31,7 +31,7 @@ void vc4vec_local_init()
 void vc4vec_local_finalize()
 {
 	vc4vec_called.local--;
-	if (vc4vec_called.local != -1)
+	if (vc4vec_called.local != 0)
 		return;
 
 	unmapmem_cpu(v3d_p, V3D_LENGTH);
