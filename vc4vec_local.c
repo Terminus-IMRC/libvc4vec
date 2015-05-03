@@ -4,9 +4,8 @@
 #include "vc4vec_local.h"
 #include "error.h"
 
-#include "v3d/v3d.h"
-#include "mailbox/mailbox.h"
-#include "mailbox/xmailbox.h"
+#include "v3d.h"
+#include "mailbox.h"
 
 int mb;
 unsigned *v3d_p;

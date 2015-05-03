@@ -5,7 +5,7 @@
 #include "vc4vec_local.h"
 #include "qpu_job_launcher.h"
 
-#include "v3d/v3d.h"
+#include "v3d.h"
 
 void qpu_job_launcher_init()
 {
