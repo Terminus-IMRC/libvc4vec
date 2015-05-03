@@ -24,7 +24,7 @@ void vc4vec_local_init()
 		exit(EXIT_FAILURE);
 	}
 	v3d_init();
-	v3d_p = mapmem_cpu(v3d_peripheral_addr(), V3D_LENGTH);
+	v3d_p = mapmem_cpu(BUS_TO_PHYS(v3d_peripheral_addr()), V3D_LENGTH);
 }
 
 void vc4vec_local_finalize()

@@ -43,7 +43,7 @@ struct mem_allocated_node* mem_allocated_node_alloc(size_t size)
 	p->size = size;
 	p->handle = xmem_alloc(mb, size, align, GPU_MEM_FLG);
 	p->gpu_addr = xmem_lock(mb, p->handle);
-	p->cpu_addr = mapmem_cpu(p->gpu_addr, size);
+	p->cpu_addr = mapmem_cpu(BUS_TO_PHYS(p->gpu_addr), size);
 	p->next = NULL;
 
 	return p;
