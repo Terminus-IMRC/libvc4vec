@@ -6,6 +6,7 @@
 #include "qpu_job_launcher.h"
 #include "vi_inc_256.h"
 #include "vi_add_vi_256.h"
+#include "vi_add_c_256.h"
 
 #include "error.h"
 
@@ -23,12 +24,14 @@ void vc4vec_init()
 	vc4vec_called.job_launcher = 0;
 	vc4vec_called.vi_inc_256 = 0;
 	vc4vec_called.vi_add_vi_256 = 0;
+	vc4vec_called.vi_add_c_256 = 0;
 
 	vc4vec_local_init();
 	vc4vec_mem_init();
 	qpu_job_launcher_init();
 	vi_inc_256_init();
 	vi_add_vi_256_init();
+	vi_add_c_256_init();
 
 	atexit(vc4vec_finalize);
 }
@@ -46,6 +49,7 @@ void vc4vec_finalize()
 	qpu_job_launcher_finalize();
 	vi_inc_256_finalize();
 	vi_add_vi_256_finalize();
+	vi_add_c_256_finalize();
 
 	if (vc4vec_called.local != 0) {
 		error("non-zero called.local: %d\n", vc4vec_called.local);
@@ -69,6 +73,10 @@ void vc4vec_finalize()
 	}
 	if (vc4vec_called.vi_add_vi_256 != 0) {
 		error("non-zero called.vi_add_vi_256: %d\n", vc4vec_called.vi_add_vi_256);
+		exit(EXIT_FAILURE);
+	}
+	if (vc4vec_called.vi_add_c_256 != 0) {
+		error("non-zero called.vi_add_c_256: %d\n", vc4vec_called.vi_add_c_256);
 		exit(EXIT_FAILURE);
 	}
 }

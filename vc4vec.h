@@ -19,5 +19,6 @@
 
 	void vi_inc_256(unsigned vpmout_qpu, unsigned vpmin_qpu, const int vec_nmemb);
 	void vi_add_vi_256(unsigned vpmout_qpu, unsigned vpmin1_qpu, unsigned vpmin2_qpu, const int vec_nmemb);
+	void vi_add_c_256(unsigned vpmout_qpu, unsigned vpmin_qpu, const signed c, const int vec_nmemb);
 
 #endif /* _VC4VEC_H_ */
