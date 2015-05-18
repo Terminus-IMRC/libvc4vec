@@ -6,7 +6,7 @@
 #include "qpu_job_launcher.h"
 
 static const unsigned code[] = {
-#include "vi_add_c_256.qasm.bin.hex"
+#include "vi_add_ci_256.qasm.bin.hex"
 };
 
 static struct vc4vec_mem code_mem, unif_mem;
@@ -14,10 +14,10 @@ static struct vc4vec_mem code_mem, unif_mem;
 static const int code_size = sizeof(code);
 static const int unif_size = 1024;
 
-void vi_add_c_256_init()
+void vi_add_ci_256_init()
 {
-	vc4vec_called.vi_add_c_256++;
-	if (vc4vec_called.vi_add_c_256 != 1)
+	vc4vec_called.vi_add_ci_256++;
+	if (vc4vec_called.vi_add_ci_256 != 1)
 		return;
 
 	vc4vec_mem_init();
@@ -30,10 +30,10 @@ void vi_add_c_256_init()
 	qpu_job_launcher_init();
 }
 
-void vi_add_c_256_finalize()
+void vi_add_ci_256_finalize()
 {
-	vc4vec_called.vi_add_c_256--;
-	if (vc4vec_called.vi_add_c_256 != 0)
+	vc4vec_called.vi_add_ci_256--;
+	if (vc4vec_called.vi_add_ci_256 != 0)
 		return;
 
 	qpu_job_launcher_finalize();
@@ -44,7 +44,7 @@ void vi_add_c_256_finalize()
 	vc4vec_mem_finalize();
 }
 
-void vi_add_c_256(unsigned vpmout_qpu, unsigned vpmin_qpu, const signed c, const int vec_nmemb)
+void vi_add_ci_256(unsigned vpmout_qpu, unsigned vpmin_qpu, const signed c, const int vec_nmemb)
 {
 	unsigned *p = unif_mem.cpu_addr;
 
