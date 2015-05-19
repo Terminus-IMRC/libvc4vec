@@ -1,10 +1,10 @@
 all:
 
 TARGET := libvc4vec.so
-SRCS := vc4vec.c vc4vec_local.c vc4vec_mem.c mem_node.c qpu_job_launcher.c vi_inc_256.c vi_add_vi_256.c vi_add_ci_256.c
+SRCS := vc4vec.c vc4vec_local.c vc4vec_mem.c mem_node.c qpu_job_launcher.c vi_add_vi_256.c vi_add_ci_256.c
 DEPS := $(SRCS:%.c=%.c.d)
 OBJS := $(SRCS:%.c=%.c.o)
-QASMS := vi_inc_256.qasm vi_add_vi_256.qasm vi_add_ci_256.qasm
+QASMS := vi_add_vi_256.qasm vi_add_ci_256.qasm
 QBINS := $(QASMS:%.qasm=%.qasm.bin)
 QHEXS := $(QASMS:%.qasm=%.qasm.bin.hex)
 ALLDEPS = $(MAKEFILE_LIST_SANS_DEPS)
@@ -22,7 +22,6 @@ define qasm-dep-on-c
  $(call dep-on-c, $(1:%.qasm=%.qasm.bin.hex), $2)
 endef
 
-$(eval $(call qasm-dep-on-c, vi_inc_256.qasm, vi_inc_256.c))
 $(eval $(call qasm-dep-on-c, vi_add_vi_256.qasm, vi_add_vi_256.c))
 $(eval $(call qasm-dep-on-c, vi_add_ci_256.qasm, vi_add_ci_256.c))
 
