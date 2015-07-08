@@ -1,6 +1,6 @@
 all:
 
-TARGET := libvc4vec.so
+TARGET := libvc4vec.so libvc4vec.a
 SRCS := vc4vec.c vc4vec_local.c vc4vec_mem.c mem_node.c qpu_job_launcher.c vi_add_vi_256.c vi_add_ci_256.c
 DEPS := $(SRCS:%.c=%.c.d)
 OBJS := $(SRCS:%.c=%.c.o)
@@ -10,6 +10,7 @@ QHEXS := $(QASMS:%.qasm=%.qasm.bin.hex)
 ALLDEPS = $(MAKEFILE_LIST_SANS_DEPS)
 CFLAGS_LOCAL := -Wall -Wextra -O2 -g
 LDLIBS_LOCAL := -lmailbox -lvc4v3d
+ARFLAGS := cr
 
 # $(eval $(call dep-on-c, dep, c-source))
 define dep-on-c
@@ -28,6 +29,8 @@ $(eval $(call qasm-dep-on-c, vi_add_ci_256.qasm, vi_add_ci_256.c))
 CC := gcc
 QTC := qtc
 QBIN2HEX := qbin2hex
+AR := ar
+RANLIB := ranlib
 RM := rm -f
 
 VALID_MAKECMDGOALS := all $(TARGET) %.c.d %.c.o clean
@@ -53,6 +56,10 @@ COMPILE.c = $(CC) $(CFLAGS) $(CFLAGS_LOCAL) $(EXTRACFLAGS) $(CPPFLAGS) $(CPPFLAG
 COMPILE.d = $(CC) $(CFLAGS) $(CFLAGS_LOCAL) $(EXTRACFLAGS) $(CPPFLAGS) $(CPPFLAGS_LOCAL) $(EXTRACPPFLAGS) $(TARGET_ARCH) -M -MP -MT $<.o -MF $@
 
 all: $(TARGET)
+
+%.a: $(OBJS) $(ALLDEPS)
+	$(AR) $(ARFLAGS) $@ $(OBJS)
+	$(RANLIB) $@
 
 %.so: $(OBJS) $(ALLDEPS)
 	$(COMPILE.o) $(OUTPUT_OPTION) $(OBJS) $(LOADLIBES) $(LDLIBS) $(LDLIBS_LOCAL)

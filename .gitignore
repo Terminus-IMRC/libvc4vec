@@ -1,6 +1,7 @@
 *.c.d
 *.c.o
 *.so
+*.a
 
 *.qasm.bin
 *.qasm.bin.hex
