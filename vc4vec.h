@@ -16,6 +16,7 @@
 	void vc4vec_mem_free(struct vc4vec_mem *mem);
 
 	void launch_qpu_job(uint32_t unif_length, uint32_t unif_addr, uint32_t prog_addr);
+	void launch_qpu_job_v3d(uint32_t unif_length, uint32_t unif_addr, uint32_t prog_addr);
 
 	void vi_add_vi_256(unsigned vpmout_qpu, unsigned vpmin1_qpu, unsigned vpmin2_qpu, const int vec_nmemb);
 	void vi_add_ci_256(unsigned vpmout_qpu, unsigned vpmin_qpu, const signed c, const int vec_nmemb);

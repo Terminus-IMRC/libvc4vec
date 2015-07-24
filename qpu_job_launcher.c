@@ -27,6 +27,11 @@ void qpu_job_launcher_finalize()
 
 void launch_qpu_job(uint32_t unif_length, uint32_t unif_addr, uint32_t prog_addr)
 {
+	launch_qpu_job_v3d(unif_length, unif_addr, prog_addr);
+}
+
+void launch_qpu_job_v3d(uint32_t unif_length, uint32_t unif_addr, uint32_t prog_addr)
+{
 	v3d_write(v3d_p, V3D_QPURQUL, unif_length);
 	v3d_write(v3d_p, V3D_QPURQUA, unif_addr);
 	v3d_write(v3d_p, V3D_QPURQPC, prog_addr);
