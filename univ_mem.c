@@ -1,3 +1,5 @@
+#define _BSD_SOURCE
+
 #include <stdlib.h>
 #include <string.h>
 
@@ -11,6 +13,12 @@ struct vc4vec_mem *univ_mem = NULL;
 static unsigned int univ_mem_len = 0;
 int *univ_mem_size = NULL;
 
+struct id_str {
+	univ_mem_id_t id;
+	char *str;
+	struct id_str *next;
+} *id_str = NULL;
+
 void univ_mem_init()
 {
 	vc4vec_called.univ_mem ++;
@@ -23,6 +31,7 @@ void univ_mem_init()
 void univ_mem_finalize()
 {
 	int i;
+	struct id_str *p;
 
 	vc4vec_called.univ_mem--;
 	if (vc4vec_called.univ_mem != 0)
@@ -34,6 +43,15 @@ void univ_mem_finalize()
 			exit(EXIT_FAILURE);
 		}
 	}
+
+	for (p = id_str; p != NULL; ) {
+		struct id_str *p_tmp = p->next;
+
+		free(p->str);
+		free(p);
+		p = p_tmp;
+	}
+	id_str = NULL;
 
 	vc4vec_mem_finalize();
 }
@@ -90,4 +108,45 @@ void univ_mem_free(const univ_mem_id_t id)
 
 	vc4vec_mem_free(&univ_mem[id]);
 	univ_mem[id].cpu_addr = NULL;
+}
+
+univ_mem_id_t univ_mem_str_to_id(const char *str)
+{
+	struct id_str *p, *p_prev;
+
+	if (str == NULL) {
+		error("specified str is NULL\n");
+		exit(EXIT_FAILURE);
+	}
+
+	if (id_str == NULL) {
+		id_str = malloc(sizeof(struct id_str));
+		if (id_str == NULL) {
+			error("failed to malloc id_str\n");
+			exit(EXIT_FAILURE);
+		}
+		id_str->id = 0;
+		id_str->str = strdup(str);
+		id_str->next = NULL;
+
+		return id_str->id;
+	}
+
+	for (p_prev = p, p = id_str; p != NULL; p_prev = p, p = p->next)
+		if ((p->str != NULL) && !strcmp(p->str, str))
+			return p->id;
+
+	p = p_prev;
+	p->next = malloc(sizeof(struct id_str));
+	if (id_str == NULL) {
+		error("failed to malloc id_str\n");
+		exit(EXIT_FAILURE);
+	}
+	p->next->next = NULL;
+
+	/* So do not use manually-defined ids if you use id_str system */
+	p->next->id = p->id + 1;
+	p->next->str = strdup(str);
+
+	return p->next->id;
 }
