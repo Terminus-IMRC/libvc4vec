@@ -1,7 +1,7 @@
 all:
 
 TARGET := libvc4vec.so libvc4vec.a
-SRCS := vc4vec.c vc4vec_local.c vc4vec_mem.c mem_node.c qpu_job_launcher.c vi_add_vi_256.c vi_add_ci_256.c
+SRCS := vc4vec.c vc4vec_local.c vc4vec_mem.c mem_node.c qpu_job_launcher.c univ_mem.c vi_add_vi_256.c vi_add_ci_256.c
 DEPS := $(SRCS:%.c=%.c.d)
 OBJS := $(SRCS:%.c=%.c.o)
 QASMS := vi_add_vi_256.qasm vi_add_ci_256.qasm
