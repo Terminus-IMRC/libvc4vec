@@ -12,6 +12,7 @@
 struct vc4vec_mem *univ_mem = NULL;
 static unsigned int univ_mem_len = 0;
 int *univ_mem_size = NULL;
+int *univ_mem_use_count = NULL;
 
 struct id_str {
 	univ_mem_id_t id;
@@ -36,6 +37,11 @@ void univ_mem_finalize()
 	vc4vec_called.univ_mem--;
 	if (vc4vec_called.univ_mem != 0)
 		return;
+
+	free(univ_mem_use_count);
+	free(univ_mem_size);
+	univ_mem_use_count = NULL;
+	univ_mem_size = NULL;
 
 	for (i = 0; (unsigned int) i < univ_mem_len; i ++) {
 		if (univ_mem[i].cpu_addr != NULL) {
@@ -75,13 +81,22 @@ void univ_mem_set_size(const univ_mem_id_t id, const int size)
 			exit(EXIT_FAILURE);
 		}
 
+		univ_mem_use_count = realloc(univ_mem_use_count, univ_mem_len_new * sizeof(*univ_mem_use_count));
+		if (univ_mem_use_count == NULL) {
+			error("failed to realloc univ_mem_use_count\n");
+			exit(EXIT_FAILURE);
+		}
+
 		for (i = univ_mem_len; i < univ_mem_len_new; i ++) {
 			univ_mem[i].cpu_addr = NULL;
 			univ_mem_size[i] = 0;
+			univ_mem_use_count[i] = 0;
 		}
 
 		univ_mem_len = univ_mem_len_new;
 	}
+
+	univ_mem_use_count[id] ++;
 
 	/* Note: We do not shrink the size */
 	if (univ_mem_size[id] < size) {
@@ -106,6 +121,14 @@ void univ_mem_free(const univ_mem_id_t id)
 		error("attempted to free non-allocated vc4vec_mem in univ_mem\n");
 		exit(EXIT_FAILURE);
 	}
+
+	univ_mem_use_count[id] --;
+
+	if (univ_mem_use_count[id] < 0) {
+		error("use_count[%d] is less than 0\n", id);
+		exit(EXIT_FAILURE);
+	} else if (univ_mem_use_count[id] != 0)
+		return;
 
 	vc4vec_mem_free(&univ_mem[id]);
 	univ_mem[id].cpu_addr = NULL;
