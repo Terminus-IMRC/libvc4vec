@@ -83,7 +83,8 @@ void univ_mem_set_size(const univ_mem_id_t id, const int size)
 		univ_mem_len = univ_mem_len_new;
 	}
 
-	if (univ_mem_size[id] != size) {
+	/* Note: We do not shrink the size */
+	if (univ_mem_size[id] < size) {
 		struct vc4vec_mem mem_new;
 
 		vc4vec_mem_alloc(&mem_new, size);
