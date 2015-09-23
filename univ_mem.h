@@ -14,5 +14,6 @@
 	void univ_mem_set_size(const univ_mem_id_t id, const int size);
 	void univ_mem_free(const univ_mem_id_t id);
 	univ_mem_id_t univ_mem_str_to_id(const char *str);
+	void univ_mem_get_addr_by_id(struct vc4vec_mem *p, const univ_mem_id_t id);
 
 #endif /* _UNIV_MEM_H_ */

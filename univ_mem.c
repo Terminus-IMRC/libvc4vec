@@ -150,3 +150,13 @@ univ_mem_id_t univ_mem_str_to_id(const char *str)
 
 	return p->next->id;
 }
+
+void univ_mem_get_addr_by_id(struct vc4vec_mem *p, const univ_mem_id_t id)
+{
+	if (id >= univ_mem_len) {
+		error("attempted to copy non-allocated univ_mem\n");
+		exit(EXIT_FAILURE);
+	}
+
+	memcpy(p, &univ_mem[id], sizeof(struct vc4vec_mem));
+}
