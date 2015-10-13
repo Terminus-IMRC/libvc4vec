@@ -49,6 +49,7 @@ void univ_mem_finalize()
 			exit(EXIT_FAILURE);
 		}
 	}
+	univ_mem_len = 0;
 
 	for (p = id_str; p != NULL; ) {
 		struct id_str *p_tmp = p->next;
