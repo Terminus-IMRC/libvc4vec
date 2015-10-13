@@ -8,13 +8,9 @@
 	extern unsigned *v3d_p;
 
 	struct vc4vec_called {
-		signed vc4vec_local; /* vc4vec_local */
-		signed vc4vec_mem; /* vc4vec_mem */
-		signed mem_allocated_node; /* mem_allocated_node */
-		signed qpu_job_launcher; /* qpu_job_launcher */
-		signed univ_mem; /* univ_mem */
-		signed vi_add_vi_256; /* vi_add_vi_256 */
-		signed vi_add_ci_256; /* vi_add_ci_256 */
+#define X(x) signed x;
+#include "xnames.h"
+#undef X
 	};
 
 	extern struct vc4vec_called vc4vec_called;

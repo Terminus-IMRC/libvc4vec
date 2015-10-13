@@ -17,6 +17,8 @@ NNAMES_MK := $(NNAMES).mk
 QNAMES_MK := $(QNAMES).mk
 XNNAMES := x$(NNAMES)
 XQNAMES := x$(QNAMES)
+NNAMES_INC := $(NNAMES).h
+QNAMES_INC := $(QNAMES).h
 
 CC := gcc
 QTC := qtc
@@ -41,6 +43,8 @@ CFLAGS_LOCAL := -Wall -Wextra -O2 -g -pipe
 LDLIBS_LOCAL := -lmailbox -lvc4v3d
 ARFLAGS := cr
 
+$(DEPS): $(XNNAMES) $(XQNAMES) $(NNAMES_INC) $(QNAMES_INC)
+
 $(NNAMES_MK): $(NNAMES)
 	$(SED) 's/^\(.*\)$$/SRCS_NNAMES += \1.c/' <$< >$@
 
@@ -55,7 +59,13 @@ $(XNNAMES): $(NNAMES)
 $(XQNAMES): $(QNAMES)
 	$(SED) 's/^\(.*\)$$/X(\1)/' <$< >$@
 
-VALID_MAKECMDGOALS := all $(TARGET) $(SRCS) $(DEPS) $(OBJS) $(QASMS) $(QBINS) $(QHEXS) $(NNAMES_MK) $(QNAMES_MK) $(XNNAMES) $(XQNAMES) clean
+$(NNAMES_INC): $(NNAMES)
+	$(SED) 's/^\(.*\)$$/#include "\1.h"/' <$< >$@
+
+$(QNAMES_INC): $(QNAMES)
+	$(SED) 's/^\(.*\)$$/#include "\1.h"/' <$< >$@
+
+VALID_MAKECMDGOALS := all $(TARGET) $(SRCS) $(DEPS) $(OBJS) $(QASMS) $(QBINS) $(QHEXS) $(NNAMES_MK) $(QNAMES_MK) $(XNNAMES) $(XQNAMES) $(NNAMES_INC) $(QNAMES_INC) clean
 NONEED_DEP_MAKECMDGOALS := clean
 
 EXTRA_MAKECMDGOALS := $(filter-out $(VALID_MAKECMDGOALS), $(MAKECMDGOALS))
@@ -109,3 +119,5 @@ clean:
 	$(RM) $(XNNAMES)
 	$(RM) $(QNAMES_MK)
 	$(RM) $(NNAMES_MK)
+	$(RM) $(QNAMES_INC)
+	$(RM) $(NNAMES_INC)
