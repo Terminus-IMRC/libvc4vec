@@ -50,6 +50,8 @@ void univ_mem_finalize()
 		}
 	}
 	univ_mem_len = 0;
+	free(univ_mem);
+	univ_mem = NULL;
 
 	for (p = id_str; p != NULL; ) {
 		struct id_str *p_tmp = p->next;
