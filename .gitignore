@@ -10,6 +10,8 @@ nnames.txt.mk
 qnames.txt.mk
 xnnames.txt
 xqnames.txt
+nnames.txt.h
+qnames.txt.h
 
 *.swp
 
