@@ -7,23 +7,25 @@
 #include "vc4vec_mem.h"
 #include "mem_node.h"
 
+#define PNAME vc4vec_mem
+
 static struct mem_allocated_node *orig = NULL;
 
 static void mem_free_all();
 
-void vc4vec_mem_init()
+void INIT_FUNC_NAME()
 {
-	vc4vec_called.mem++;
-	if (vc4vec_called.mem != 1)
+	CALLED_VAR ++;
+	if (CALLED_VAR != 1)
 		return;
 
 	mem_allocated_node_init();
 }
 
-void vc4vec_mem_finalize()
+void FINALIZE_FUNC_NAME()
 {
-	vc4vec_called.mem--;
-	if (vc4vec_called.mem != 0)
+	CALLED_VAR --;
+	if (CALLED_VAR != 0)
 		return;
 
 	mem_free_all();

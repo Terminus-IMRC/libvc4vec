@@ -10,13 +10,15 @@
 #include "v3d.h"
 #include "mailbox.h"
 
+#define PNAME qpu_job_launcher
+
 static struct vc4vec_mem ml_control;
 static const unsigned MAX_QPUS = 4 * 3;
 
-void qpu_job_launcher_init()
+void INIT_FUNC_NAME()
 {
-	vc4vec_called.job_launcher++;
-	if (vc4vec_called.job_launcher != 1)
+	CALLED_VAR ++;
+	if (CALLED_VAR != 1)
 		return;
 
 	vc4vec_local_init();
@@ -25,10 +27,10 @@ void qpu_job_launcher_init()
 	vc4vec_mem_alloc(&ml_control, MAX_QPUS * 2 * (32 / 8));
 }
 
-void qpu_job_launcher_finalize()
+void FINALIZE_FUNC_NAME()
 {
-	vc4vec_called.job_launcher--;
-	if (vc4vec_called.job_launcher != 0)
+	CALLED_VAR --;
+	if (CALLED_VAR != 0)
 		return;
 
 	vc4vec_mem_free(&ml_control);

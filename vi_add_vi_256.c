@@ -6,8 +6,10 @@
 #include "univ_mem.h"
 #include "qpu_job_launcher.h"
 
+#define PNAME vi_add_vi_256
+
 static const unsigned code[] = {
-#include "vi_add_vi_256.qasm.bin.hex"
+#include CODE_FN_STR
 };
 
 static univ_mem_id_t code_id, unif_id;
@@ -16,15 +18,15 @@ static struct vc4vec_mem code_mem, unif_mem;
 static const int code_size = sizeof(code);
 static const int unif_len = 1024;
 
-void vi_add_vi_256_init()
+void INIT_FUNC_NAME()
 {
-	vc4vec_called.vi_add_vi_256++;
-	if (vc4vec_called.vi_add_vi_256 != 1)
+	CALLED_VAR ++;
+	if (CALLED_VAR != 1)
 		return;
 
 	univ_mem_init();
 
-	code_id = univ_mem_str_to_id("vc4vec:vi_add_vi_256:code");
+	code_id = univ_mem_str_to_id("vc4vec:" PNAME_STR ":code");
 	univ_mem_set_size(code_id, code_size);
 	univ_mem_get_addr_by_id(&code_mem, code_id);
 
@@ -37,10 +39,10 @@ void vi_add_vi_256_init()
 	qpu_job_launcher_init();
 }
 
-void vi_add_vi_256_finalize()
+void FINALIZE_FUNC_NAME()
 {
-	vc4vec_called.vi_add_vi_256--;
-	if (vc4vec_called.vi_add_vi_256 != 0)
+	CALLED_VAR --;
+	if (CALLED_VAR != 0)
 		return;
 
 	qpu_job_launcher_finalize();
@@ -51,7 +53,7 @@ void vi_add_vi_256_finalize()
 	univ_mem_finalize();
 }
 
-void vi_add_vi_256(unsigned vpmout_qpu, unsigned vpmin1_qpu, unsigned vpmin2_qpu, const int vec_nmemb)
+void FUNC_NAME(unsigned vpmout_qpu, unsigned vpmin1_qpu, unsigned vpmin2_qpu, const int vec_nmemb)
 {
 	unsigned *p = unif_mem.cpu_addr;
 

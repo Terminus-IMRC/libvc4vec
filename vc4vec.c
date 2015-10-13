@@ -18,10 +18,10 @@ void vc4vec_init()
 	if (called != 1)
 		return;
 
-	vc4vec_called.local = 0;
-	vc4vec_called.mem = 0;
-	vc4vec_called.mem_node = 0;
-	vc4vec_called.job_launcher = 0;
+	vc4vec_called.vc4vec_local = 0;
+	vc4vec_called.vc4vec_mem = 0;
+	vc4vec_called.mem_allocated_node = 0;
+	vc4vec_called.qpu_job_launcher = 0;
 	vc4vec_called.univ_mem = 0;
 	vc4vec_called.vi_add_vi_256 = 0;
 	vc4vec_called.vi_add_ci_256 = 0;
@@ -49,20 +49,20 @@ void vc4vec_finalize()
 	vi_add_vi_256_finalize();
 	vi_add_ci_256_finalize();
 
-	if (vc4vec_called.local != 0) {
-		error("non-zero called.local: %d\n", vc4vec_called.local);
+	if (vc4vec_called.vc4vec_local != 0) {
+		error("non-zero called.vc4vec_local: %d\n", vc4vec_called.vc4vec_local);
 		exit(EXIT_FAILURE);
 	}
-	if (vc4vec_called.mem != 0) {
-		error("non-zero called.mem: %d\n", vc4vec_called.mem);
+	if (vc4vec_called.vc4vec_mem != 0) {
+		error("non-zero called.vc4vec_mem: %d\n", vc4vec_called.vc4vec_mem);
 		exit(EXIT_FAILURE);
 	}
-	if (vc4vec_called.mem_node != 0) {
-		error("non-zero called.mem_node: %d\n", vc4vec_called.mem_node);
+	if (vc4vec_called.mem_allocated_node != 0) {
+		error("non-zero called.mem_allocated_node: %d\n", vc4vec_called.mem_allocated_node);
 		exit(EXIT_FAILURE);
 	}
-	if (vc4vec_called.job_launcher != 0) {
-		error("non-zero called.job_launcher: %d\n", vc4vec_called.job_launcher);
+	if (vc4vec_called.qpu_job_launcher != 0) {
+		error("non-zero called.qpu_job_launcher: %d\n", vc4vec_called.qpu_job_launcher);
 		exit(EXIT_FAILURE);
 	}
 	if (vc4vec_called.univ_mem != 0) {

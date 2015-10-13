@@ -9,6 +9,8 @@
 #include "univ_mem.h"
 #include "error.h"
 
+#define PNAME univ_mem
+
 struct vc4vec_mem *univ_mem = NULL;
 static unsigned int univ_mem_len = 0;
 int *univ_mem_size = NULL;
@@ -20,22 +22,22 @@ struct id_str {
 	struct id_str *next;
 } *id_str = NULL;
 
-void univ_mem_init()
+void INIT_FUNC_NAME()
 {
-	vc4vec_called.univ_mem ++;
-	if (vc4vec_called.univ_mem != 1)
+	CALLED_VAR ++;
+	if (CALLED_VAR != 1)
 		return;
 
 	vc4vec_mem_init();
 }
 
-void univ_mem_finalize()
+void FINALIZE_FUNC_NAME()
 {
 	int i;
 	struct id_str *p;
 
-	vc4vec_called.univ_mem--;
-	if (vc4vec_called.univ_mem != 0)
+	CALLED_VAR --;
+	if (CALLED_VAR != 0)
 		return;
 
 	free(univ_mem_use_count);

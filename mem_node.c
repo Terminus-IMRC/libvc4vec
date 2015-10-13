@@ -8,23 +8,25 @@
 
 #include "mailbox.h"
 
+#define PNAME mem_allocated_node
+
 #define GPU_MEM_FLG (1 << 2)
 
 static const int align = 4096;
 
-void mem_allocated_node_init()
+void INIT_FUNC_NAME()
 {
-	vc4vec_called.mem_node++;
-	if (vc4vec_called.mem_node != 1)
+	CALLED_VAR ++;
+	if (CALLED_VAR != 1)
 		return;
 
 	vc4vec_local_init();
 }
 
-void mem_allocated_node_finalize()
+void FINALIZE_FUNC_NAME()
 {
-	vc4vec_called.mem_node--;
-	if (vc4vec_called.mem_node != 0)
+	CALLED_VAR --;
+	if (CALLED_VAR != 0)
 		return;
 
 	vc4vec_local_finalize();
