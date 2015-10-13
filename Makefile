@@ -70,15 +70,15 @@ NONEED_DEP_MAKECMDGOALS := clean
 
 EXTRA_MAKECMDGOALS := $(filter-out $(VALID_MAKECMDGOALS), $(MAKECMDGOALS))
 ifneq '$(EXTRA_MAKECMDGOALS)' ''
-  $(error No rule to make target `$(firstword $(EXTRA_MAKECMDGOALS))')
+ $(error No rule to make target `$(firstword $(EXTRA_MAKECMDGOALS))')
 else
-  ifeq '$(filter-out $(NONEED_DEP_MAKECMDGOALS), $(MAKECMDGOALS))' '$(MAKECMDGOALS)'
-    sinclude $(DEPS)
-	else
-    ifneq '$(words $(MAKECMDGOALS))' '1'
-      $(error Specify only one target if you want to make target which needs no source code dependency)
-    endif
+ ifeq '$(filter-out $(NONEED_DEP_MAKECMDGOALS), $(MAKECMDGOALS))' '$(MAKECMDGOALS)'
+  sinclude $(DEPS)
+ else
+  ifneq '$(words $(MAKECMDGOALS))' '1'
+   $(error Specify only one target if you want to make target which needs no source code dependency)
   endif
+ endif
 endif
 
 MAKEFILE_LIST_SANS_DEPS := $(filter-out %.c.d, $(MAKEFILE_LIST))
