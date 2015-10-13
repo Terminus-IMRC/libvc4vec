@@ -1,17 +1,5 @@
 all:
 
-TARGET := libvc4vec.so libvc4vec.a
-SRCS := vc4vec.c vc4vec_local.c vc4vec_mem.c mem_allocated_node.c qpu_job_launcher.c univ_mem.c vi_add_vi_256.c vi_add_ci_256.c
-DEPS := $(SRCS:%.c=%.c.d)
-OBJS := $(SRCS:%.c=%.c.o)
-QASMS := vi_add_vi_256.qasm vi_add_ci_256.qasm
-QBINS := $(QASMS:%.qasm=%.qasm.bin)
-QHEXS := $(QASMS:%.qasm=%.qasm.bin.hex)
-ALLDEPS = $(MAKEFILE_LIST_SANS_DEPS)
-CFLAGS_LOCAL := -Wall -Wextra -O2 -g -pipe
-LDLIBS_LOCAL := -lmailbox -lvc4v3d
-ARFLAGS := cr
-
 # $(eval $(call dep-on-c, dep, c-source))
 define dep-on-c
  $(2:%.c=%.c.d) $(2:%.c=%.c.o): $1
@@ -23,8 +11,12 @@ define qasm-dep-on-c
  $(call dep-on-c, $(1:%.qasm=%.qasm.bin.hex), $2)
 endef
 
-$(eval $(call qasm-dep-on-c, vi_add_vi_256.qasm, vi_add_vi_256.c))
-$(eval $(call qasm-dep-on-c, vi_add_ci_256.qasm, vi_add_ci_256.c))
+NNAMES := nnames.txt
+QNAMES := qnames.txt
+NNAMES_MK := $(NNAMES).mk
+QNAMES_MK := $(QNAMES).mk
+XNNAMES := x$(NNAMES)
+XQNAMES := x$(QNAMES)
 
 CC := gcc
 QTC := qtc
@@ -32,8 +24,38 @@ QBIN2HEX := qbin2hex
 AR := ar
 RANLIB := ranlib
 RM := rm -f
+SED := sed
 
-VALID_MAKECMDGOALS := all $(TARGET) %.c.d %.c.o clean
+sinclude $(NNAMES_MK)
+sinclude $(QNAMES_MK)
+
+TARGET := libvc4vec.so libvc4vec.a
+SRCS := vc4vec.c $(SRCS_NNAMES) $(SRCS_QNAMES)
+DEPS := $(SRCS:%.c=%.c.d)
+OBJS := $(SRCS:%.c=%.c.o)
+QASMS := $(QASMS_QNAMES)
+QBINS := $(QASMS:%.qasm=%.qasm.bin)
+QHEXS := $(QASMS:%.qasm=%.qasm.bin.hex)
+ALLDEPS = $(MAKEFILE_LIST_SANS_DEPS)
+CFLAGS_LOCAL := -Wall -Wextra -O2 -g -pipe
+LDLIBS_LOCAL := -lmailbox -lvc4v3d
+ARFLAGS := cr
+
+$(NNAMES_MK): $(NNAMES)
+	$(SED) 's/^\(.*\)$$/SRCS_NNAMES += \1.c/' <$< >$@
+
+$(QNAMES_MK): $(QNAMES)
+	$(SED) 's/^\(.*\)$$/SRCS_QNAMES += \1.c/' <$< >$@
+	$(SED) 's/^\(.*\)$$/QASMS_QNAMES += \1.qasm/' <$< >>$@
+	$(SED) 's/^\(.*\)$$/$$(eval $$(call qasm-dep-on-c, \1.qasm, \1.c))/' <$< >>$@
+
+$(XNNAMES): $(NNAMES)
+	$(SED) 's/^\(.*\)$$/X(\1)/' <$< >$@
+
+$(XQNAMES): $(QNAMES)
+	$(SED) 's/^\(.*\)$$/X(\1)/' <$< >$@
+
+VALID_MAKECMDGOALS := all $(TARGET) $(SRCS) $(DEPS) $(OBJS) $(QASMS) $(QBINS) $(QHEXS) $(NNAMES_MK) $(QNAMES_MK) $(XNNAMES) $(XQNAMES) clean
 NONEED_DEP_MAKECMDGOALS := clean
 
 EXTRA_MAKECMDGOALS := $(filter-out $(VALID_MAKECMDGOALS), $(MAKECMDGOALS))
@@ -83,3 +105,7 @@ clean:
 	$(RM) $(DEPS)
 	$(RM) $(QBINS)
 	$(RM) $(QHEXS)
+	$(RM) $(XQNAMES)
+	$(RM) $(XNNAMES)
+	$(RM) $(QNAMES_MK)
+	$(RM) $(NNAMES_MK)

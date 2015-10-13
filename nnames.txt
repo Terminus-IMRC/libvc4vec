@@ -1,0 +1,5 @@
+vc4vec_local
+vc4vec_mem
+mem_allocated_node
+qpu_job_launcher
+univ_mem

@@ -6,6 +6,11 @@
 *.qasm.bin
 *.qasm.bin.hex
 
+nnames.txt.mk
+qnames.txt.mk
+xnnames.txt
+xqnames.txt
+
 *.swp
 
 tags
