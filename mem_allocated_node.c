@@ -4,7 +4,7 @@
 
 #include "vc4vec.h"
 #include "vc4vec_local.h"
-#include "mem_node.h"
+#include "mem_allocated_node.h"
 
 #include "mailbox.h"
 

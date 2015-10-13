@@ -5,7 +5,7 @@
 #include "vc4vec.h"
 #include "vc4vec_local.h"
 #include "vc4vec_mem.h"
-#include "mem_node.h"
+#include "mem_allocated_node.h"
 
 #define PNAME vc4vec_mem
 
