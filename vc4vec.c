@@ -10,13 +10,13 @@
 
 #include "error.h"
 
+static signed called = 0;
+
 void vc4vec_init()
 {
-	static _Bool is_called = 0;
-
-	if (is_called)
+	called ++;
+	if (called != 1)
 		return;
-	is_called = !0;
 
 	vc4vec_called.local = 0;
 	vc4vec_called.mem = 0;
@@ -38,11 +38,9 @@ void vc4vec_init()
 
 void vc4vec_finalize()
 {
-	static _Bool is_called = 0;
-
-	if (is_called)
+	called --;
+	if (called != 0)
 		return;
-	is_called = !0;
 
 	vc4vec_local_finalize();
 	vc4vec_mem_finalize();
