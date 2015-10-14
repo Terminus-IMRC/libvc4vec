@@ -19,8 +19,6 @@ void vc4vec_init()
 #define X(x) xCCAT(x, _init());
 #include "xnames.h"
 #undef X
-
-	atexit(vc4vec_finalize);
 }
 
 void vc4vec_finalize()
